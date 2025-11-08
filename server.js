@@ -7,6 +7,11 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/auth.js';
 import vehicleRoutes from './routes/vehicles.js';
 import appointmentRoutes from './routes/appointments.js';
+import inventoryRoutes from './routes/inventory.js';        // NEW
+import managerRoutes from './routes/manager.js';            // NEW
+import mechanicRoutes from './routes/mechanic.js';          // NEW
+import feedbackRoutes from './routes/feedback.js';          // NEW
+import settingsRoutes from './routes/settings.js';          // NEW
 
 // Load environment variables
 dotenv.config();
@@ -28,17 +33,27 @@ app.use(express.static('public'));
 app.use('/api/auth', authRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/inventory', inventoryRoutes);        // NEW
+app.use('/api/manager', managerRoutes);            // NEW
+app.use('/api/mechanic', mechanicRoutes);          // NEW
+app.use('/api/feedback', feedbackRoutes);          // NEW
+app.use('/api/settings', settingsRoutes);          // NEW
 
 // Basic route for testing
 app.get('/', (req, res) => {
   res.json({
     message: 'Vehicle Service Center API',
-    version: '1.0.0',
+    version: '2.0.0',
     status: 'Running',
     endpoints: {
       auth: '/api/auth (register, login, me)',
       vehicles: '/api/vehicles',
       appointments: '/api/appointments',
+      inventory: '/api/inventory',        // NEW
+      manager: '/api/manager',            // NEW
+      mechanic: '/api/mechanic',          // NEW
+      feedback: '/api/feedback',          // NEW
+      settings: '/api/settings',          // NEW
     }
   });
 });
