@@ -1,8 +1,8 @@
 import Inventory from "../models/Inventory.js";
-import twilio from 'twilio';
+import twilio from "twilio";
 
 const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID, 
+  process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
 );
 
@@ -195,7 +195,6 @@ export const getLowStock = async (req, res) => {
   }
 };
 
-
 // @desc    Send order SMS for low stock item
 // @route   POST /api/inventory/:id/order
 // @access  Private (Manager)
@@ -210,8 +209,8 @@ export const sendOrder = async (req, res) => {
     }
 
     if (!orderQuantity || !phoneNumber) {
-      return res.status(400).json({ 
-        message: "Please provide orderQuantity and phoneNumber" 
+      return res.status(400).json({
+        message: "Please provide orderQuantity and phoneNumber",
       });
     }
 
@@ -220,7 +219,7 @@ export const sendOrder = async (req, res) => {
     const messageBody = `
 🔧 INVENTORY ORDER - Vehicle Service Center
 Item: ${item.name}
-Part Number: ${item.partNumber || 'N/A'}
+Part Number: ${item.partNumber || "N/A"}
 Current Stock: ${item.quantity} ${item.unit}
 Order Quantity: ${orderQuantity} ${item.unit}
 Order ID: #${orderId}
@@ -231,7 +230,7 @@ Ordered by: ${req.user.name}
     const message = await client.messages.create({
       body: messageBody,
       from: process.env.TWILIO_PHONE_NUMBER, // Your Twilio number
-      to: phoneNumber                      // The hardware store's number
+      to: phoneNumber, // The hardware store's number
     });
 
     console.log(`Real SMS sent! Message SID: ${message.sid}`);
@@ -240,15 +239,14 @@ Ordered by: ${req.user.name}
       success: true,
       message: `Order SMS sent successfully to ${phoneNumber}`,
       orderId: orderId,
-      messageSid: message.sid
+      messageSid: message.sid,
     });
-
   } catch (error) {
     // If Twilio fails (e.g., number is not verified), it will error out
     console.error("Error sending real SMS:", error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: "Server error while sending SMS",
-      error: error.message 
+      error: error.message,
     });
   }
 };
