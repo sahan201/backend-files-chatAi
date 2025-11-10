@@ -1,10 +1,20 @@
 import mongoose from 'mongoose';
 
+const laborChargeSchema = new mongoose.Schema({
+  description: {
+    type: String,
+    required: true,
+  },
+  cost: {
+    type: Number,
+    required: true,
+  }
+});
+
 const partUsedSchema = new mongoose.Schema({
   inventoryItem: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Inventory',
-    required: true,
   },
   name: {
     type: String,
@@ -16,17 +26,6 @@ const partUsedSchema = new mongoose.Schema({
     min: 1,
   },
   salePrice: {
-    type: Number,
-    required: true,
-  }
-});
-
-const laborItemSchema = new mongoose.Schema({
-  description: {
-    type: String,
-    required: true,
-  },
-  cost: {
     type: Number,
     required: true,
   }
@@ -49,7 +48,7 @@ const appointmentSchema = new mongoose.Schema(
       required: [true, 'Please specify a service type.'],
     },
     date: {
-      type: Date,
+      type: String,
       required: true,
     },
     time: {
@@ -62,16 +61,19 @@ const appointmentSchema = new mongoose.Schema(
       enum: ['Scheduled', 'In Progress', 'Completed', 'Cancelled'],
       default: 'Scheduled',
     },
-    assignedMechanic: {  // Consistent naming
+    assignedMechanic: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+    },
+    notes: {
+      type: String,
     },
     description: {
       type: String,
     },
     // Digital Job Card Fields
     partsUsed: [partUsedSchema],
-    laborItems: [laborItemSchema],
+    laborItems: [laborChargeSchema],
     // Billing Fields
     subtotal: {
       type: Number,
@@ -94,8 +96,8 @@ const appointmentSchema = new mongoose.Schema(
     },
     // Feedback Tracking
     feedbackSubmitted: {
-      type: Boolean,
-      default: false,
+        type: Boolean,
+        default: false,
     }
   },
   {
